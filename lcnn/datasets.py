@@ -33,7 +33,6 @@ class WireframeDataset(Dataset):
         iname = os.path.splitext(os.path.basename(self.filelist[idx]))[0].replace('_label', "") + '.png'
         iname = os.path.join(f"{self.rootdir}/images", iname)
         image = io.imread(iname).astype(float)[:, :, :3]
-        print(self.filelist[idx], iname)
         # if "a1" in self.filelist[idx]:
         #     image = image[:, ::-1, :]
         image = (image - M.image.mean) / M.image.stddev

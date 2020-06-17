@@ -226,7 +226,9 @@ class Trainer(object):
         return total_loss
 
     def _plot_samples(self, i, index, result, meta, target, prefix):
-        fn = self.val_loader.dataset.filelist[index][:-10].replace("_a0", "") + ".png"
+        # fn = self.val_loader.dataset.filelist[index][:-10].replace("_a0", "") + ".png"
+        iname = os.path.splitext(os.path.basename(self.val_loader.dataset.filelist[index]))[0].replace('_label', "") + '.png'
+        fn = os.path.join('/mnt/lustre/wangjinwang/buildchange/codes/lcnn-mgpu/data/buildchange/v2/jinan/images', iname)
         img = io.imread(fn)
         imshow(img), plt.savefig(f"{prefix}_img.jpg"), plt.close()
 
