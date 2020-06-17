@@ -14,10 +14,11 @@ from torch.utils.data.dataloader import default_collate
 from lcnn.config import M
 
 
+
 class WireframeDataset(Dataset):
     def __init__(self, rootdir, split):
         self.rootdir = rootdir
-        filelist = glob.glob(f"{rootdir}/{split}/*_label.npz")
+        filelist = glob.glob(f"{rootdir}/labels_wireframe/*.npz")
         filelist.sort()
 
         print(f"n{split}:", len(filelist))
@@ -28,12 +29,13 @@ class WireframeDataset(Dataset):
         return len(self.filelist)
 
     def __getitem__(self, idx):
-        print("self.filelist[idx]: ", self.filelist[idx])
-        iname = self.filelist[idx][:-10].replace("_a0", "").replace("_a1", "") + ".png"
-        print("iname: ", iname)
+        # iname = self.filelist[idx][:-10].replace("_a0", "").replace("_a1", "") + ".png"
+        iname = os.path.splitext(os.path.basename(self.filelist[idx]))[0] + '.png'
+        iname = os.path.join(f"{self.rootdir}/images", iname)
+        print("label, images: ", self.filelist[idx], iname)
         image = io.imread(iname).astype(float)[:, :, :3]
-        if "a1" in self.filelist[idx]:
-            image = image[:, ::-1, :]
+        # if "a1" in self.filelist[idx]:
+        #     image = image[:, ::-1, :]
         image = (image - M.image.mean) / M.image.stddev
         image = np.rollaxis(image, 2).copy()
 

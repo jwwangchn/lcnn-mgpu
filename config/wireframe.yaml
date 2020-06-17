@@ -1,6 +1,6 @@
 io:
   logdir: logs/
-  datadir: data/wireframe/
+  datadir: data/buildchange/v2/jinan
   resume_from:
   num_workers: 4
   tensorboard_port: 0
