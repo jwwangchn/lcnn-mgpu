@@ -133,11 +133,12 @@ def main():
     model = MultitaskLearner(model)
     model = LineVectorizer(model)
 
+    model = nn.DataParallel(model.cuda(), device_ids=[0,1,2,3,4,5,6,7])
+
     if resume_from:
         model.load_state_dict(checkpoint["model_state_dict"])
     # model = model.to(device)
-    model = nn.DataParallel(model.cuda(), device_ids=[0,1,2,3,4,5,6,7])
-
+    
     # 3. optimizer
     if C.optim.name == "Adam":
         optim = torch.optim.Adam(
