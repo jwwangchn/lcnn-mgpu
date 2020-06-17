@@ -31,7 +31,6 @@ import numpy as np
 import torch
 import yaml
 from docopt import docopt
-import torch.nn as nn
 
 import lcnn
 from lcnn.config import C, M
@@ -76,8 +75,7 @@ def main():
     torch.manual_seed(0)
 
     device_name = "cpu"
-    # os.environ["CUDA_VISIBLE_DEVICES"] = args["--devices"]
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3,4,5,6,7"
+    os.environ["CUDA_VISIBLE_DEVICES"] = args["--devices"]
     if torch.cuda.is_available():
         device_name = "cuda"
         torch.backends.cudnn.deterministic = True
@@ -133,12 +131,10 @@ def main():
     model = MultitaskLearner(model)
     model = LineVectorizer(model)
 
-    model = nn.DataParallel(model.cuda(), device_ids=[0,1,2,3,4,5,6,7])
-
     if resume_from:
         model.load_state_dict(checkpoint["model_state_dict"])
-    # model = model.to(device)
-    
+    model = model.to(device)
+
     # 3. optimizer
     if C.optim.name == "Adam":
         optim = torch.optim.Adam(
