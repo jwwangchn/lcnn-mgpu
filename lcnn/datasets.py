@@ -32,7 +32,6 @@ class WireframeDataset(Dataset):
         # iname = self.filelist[idx][:-10].replace("_a0", "").replace("_a1", "") + ".png"
         iname = os.path.splitext(os.path.basename(self.filelist[idx]))[0].replace('_label', "") + '.png'
         iname = os.path.join(f"{self.rootdir}/images", iname)
-        print("label, images: ", self.filelist[idx], iname)
         image = io.imread(iname).astype(float)[:, :, :3]
         # if "a1" in self.filelist[idx]:
         #     image = image[:, ::-1, :]
